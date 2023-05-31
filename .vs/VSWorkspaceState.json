@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\backend",
+    "\\backend\\middlewares"
   ],
-  "SelectedNode": "\\package.json",
+  "SelectedNode": "\\backend\\middlewares\\errorMiddleware.js",
   "PreviewInSolutionExplorer": false
 }

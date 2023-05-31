@@ -84,7 +84,31 @@ const logoutUser = asyncHandler(async (req, res) => {
 // route GET /api/users/profile
 // access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-    const user = {
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        res.status(401);
+        throw new Error('User not found')
+    }
+
+    const userProfile = {
+        firstname: user.firstname,
+        surname: user.surname,
+        email: user.email,
+        address: user.address,
+        country: user.country,
+        phoneNumber: user.phoneNmber
+    }
+
+    res.status(201).json({
+        userProfile
+    })
+
+
+
+
+    /*const user = {
         _id: req.user._id,
         firstname: req.user.firstname,
         surname: req.user.surname,
@@ -93,6 +117,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json(
         user
     );
+    */
 });
 
 // Update user profile
@@ -105,6 +130,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         user.firstname = req.body.firstname || user.firstname;
         user.surname = req.body.surname || user.surname;
         user.email = req.body.email || user.email;
+        user.address = req.body.address || user.address;
+        user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+        user.country = req.body.country || user.country;
+
 
         if (req.body.password) {
             user.password = req.body.password;
@@ -113,20 +142,18 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         const updatedUser = await user.save();
 
         res.status(200).json({
-            _id: updatedUser._id,
+            //_id: updatedUser._id,
             firstname: updatedUser.firstname,
             surname: updatedUser.surname,
-            email: updatedUser.email
+            email: updatedUser.email,
+            address: updatedUser.address,
+            phoneNumber: updatedUser.phoneNumber,
+            country: updatedUser.country
         })
     } else {
         res.status(404);
         throw new Error('User not found');
     }
-
-
-    res.status(200).json({
-        message: 'Update User Profile'
-    });
 });
 
 
